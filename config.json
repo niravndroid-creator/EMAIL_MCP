@@ -1,0 +1,119 @@
+{
+  "_description": "Email MCP Server configuration. Copy this file to 'config.json', fill in your values, and remove or ignore all '_*' keys — they are documentation only and are stripped at load time.",
+
+  "provider": "gmail",
+  "_provider_info": {
+    "description": "Email provider preset. When set, automatically fills imap_host, imap_port, imap_use_ssl, smtp_host, smtp_port, smtp_use_tls, smtp_use_ssl. Any field you explicitly set in this file overrides the preset. Set to null to configure all IMAP/SMTP fields manually.",
+    "required": false,
+    "possible_values": ["gmail", "yahoo", "outlook", "icloud", "zoho", null]
+  },
+
+  "email": "you@example.com",
+  "_email_info": {
+    "description": "Your full email address used both for authentication and as the From address when sending.",
+    "required": true,
+    "examples": ["you@gmail.com", "you@yahoo.com", "you@outlook.com", "you@icloud.com", "you@zoho.com"]
+  },
+
+  "password": "your_app_password_here",
+  "_password_info": {
+    "description": "Account password or app-specific password. For Gmail, Yahoo, and iCloud with 2-factor authentication enabled, you must generate an App Password from your account security settings instead of using your regular login password.",
+    "required": true,
+    "notes": {
+      "gmail": "Generate at https://myaccount.google.com/apppasswords (requires 2FA enabled)",
+      "yahoo": "Generate at https://login.yahoo.com/account/security (App Passwords section)",
+      "outlook": "Use your regular Microsoft account password; enable IMAP in Outlook settings",
+      "icloud": "Generate at https://appleid.apple.com (App-Specific Passwords section)",
+      "zoho": "Use your regular Zoho password or an app-specific password if 2FA is on"
+    }
+  },
+
+  "imap_host": "",
+  "_imap_host_info": {
+    "description": "IMAP server hostname. Auto-filled by provider preset. Required if provider is null.",
+    "required_if": "provider is null",
+    "possible_values": {
+      "gmail":   "imap.gmail.com",
+      "yahoo":   "imap.mail.yahoo.com",
+      "outlook": "outlook.office365.com",
+      "icloud":  "imap.mail.me.com",
+      "zoho":    "imap.zoho.com"
+    }
+  },
+
+  "imap_port": 993,
+  "_imap_port_info": {
+    "description": "IMAP server port. Port 993 is the standard encrypted IMAP port (requires imap_use_ssl=true). All supported providers use 993.",
+    "required_if": "provider is null",
+    "possible_values": [993]
+  },
+
+  "imap_use_ssl": true,
+  "_imap_use_ssl_info": {
+    "description": "Connect to the IMAP server using SSL/TLS from the start. Must be true when imap_port is 993. All supported providers require SSL.",
+    "required_if": "provider is null",
+    "possible_values": [true, false]
+  },
+
+  "smtp_host": "",
+  "_smtp_host_info": {
+    "description": "SMTP server hostname. Auto-filled by provider preset. Required if provider is null.",
+    "required_if": "provider is null",
+    "possible_values": {
+      "gmail":   "smtp.gmail.com",
+      "yahoo":   "smtp.mail.yahoo.com",
+      "outlook": "smtp.office365.com",
+      "icloud":  "smtp.mail.me.com",
+      "zoho":    "smtp.zoho.com"
+    }
+  },
+
+  "smtp_port": 587,
+  "_smtp_port_info": {
+    "description": "SMTP server port. 587 uses STARTTLS (set smtp_use_tls=true, smtp_use_ssl=false). 465 uses SSL-on-connect (set smtp_use_ssl=true, smtp_use_tls=false). Port 587 with STARTTLS is the recommended modern standard.",
+    "required_if": "provider is null",
+    "possible_values": [587, 465],
+    "port_guide": {
+      "587": "STARTTLS — set smtp_use_tls=true and smtp_use_ssl=false",
+      "465": "SSL/TLS on connect — set smtp_use_ssl=true and smtp_use_tls=false"
+    }
+  },
+
+  "smtp_use_tls": true,
+  "_smtp_use_tls_info": {
+    "description": "Upgrade the SMTP connection to TLS using STARTTLS after connecting. Use with smtp_port=587. Mutually exclusive with smtp_use_ssl — only one may be true.",
+    "required_if": "provider is null",
+    "possible_values": [true, false]
+  },
+
+  "smtp_use_ssl": false,
+  "_smtp_use_ssl_info": {
+    "description": "Connect to the SMTP server using SSL/TLS from the start. Use with smtp_port=465. Mutually exclusive with smtp_use_tls — only one may be true.",
+    "required_if": "provider is null",
+    "possible_values": [true, false]
+  },
+
+  "_provider_reference": {
+    "_note": "Full settings for every supported provider are listed here for reference. When provider is set, these are applied automatically.",
+    "gmail": {
+      "imap_host": "imap.gmail.com",    "imap_port": 993, "imap_use_ssl": true,
+      "smtp_host": "smtp.gmail.com",    "smtp_port": 587, "smtp_use_tls": true, "smtp_use_ssl": false
+    },
+    "yahoo": {
+      "imap_host": "imap.mail.yahoo.com",  "imap_port": 993, "imap_use_ssl": true,
+      "smtp_host": "smtp.mail.yahoo.com",  "smtp_port": 587, "smtp_use_tls": true, "smtp_use_ssl": false
+    },
+    "outlook": {
+      "imap_host": "outlook.office365.com", "imap_port": 993, "imap_use_ssl": true,
+      "smtp_host": "smtp.office365.com",    "smtp_port": 587, "smtp_use_tls": true, "smtp_use_ssl": false
+    },
+    "icloud": {
+      "imap_host": "imap.mail.me.com", "imap_port": 993, "imap_use_ssl": true,
+      "smtp_host": "smtp.mail.me.com", "smtp_port": 587, "smtp_use_tls": true, "smtp_use_ssl": false
+    },
+    "zoho": {
+      "imap_host": "imap.zoho.com", "imap_port": 993, "imap_use_ssl": true,
+      "smtp_host": "smtp.zoho.com", "smtp_port": 587, "smtp_use_tls": true, "smtp_use_ssl": false
+    }
+  }
+}
