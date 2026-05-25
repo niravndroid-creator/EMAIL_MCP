@@ -92,25 +92,49 @@ class EmailConfig(BaseModel):
 def load_config(path: str = "config.json") -> EmailConfig:
     """Load and validate configuration from a JSON file.
 
-    Steps:
-    1. Read config.json (raises FileNotFoundError with helpful message if missing).
-    2. Strip all metadata keys (any key starting with '_').
-    3. If 'provider' is set, apply the corresponding preset for imap/smtp fields.
-       Explicit non-empty values in config.json always override preset defaults.
-    4. Validate and return an EmailConfig instance.
+    Supports two config.json formats:
+
+    1. Schema format — parameters defined under config.properties, with values
+       stored in each property's 'default' field:
+         {
+           "config": {
+             "properties": {
+               "email":    { "default": "you@example.com" },
+               "password": { "default": "app_password" },
+               "provider": { "default": "gmail" },
+               ...
+             }
+           }
+         }
+
+    2. Flat format — parameters as top-level keys (legacy):
+         { "provider": "gmail", "email": "you@example.com", ... }
+
+    In both formats:
+    - If 'provider' is set, IMAP/SMTP fields are auto-filled from the preset.
+    - Explicit non-empty values always override preset defaults.
     """
     config_path = Path(path)
     if not config_path.exists():
         raise FileNotFoundError(
             f"Config file '{path}' not found. "
-            "Copy 'config.example.json' to 'config.json' and fill in your credentials."
+            "Fill in your credentials in 'config.json' and try again."
         )
 
     with config_path.open("r", encoding="utf-8") as f:
         raw: dict = json.load(f)
 
-    # Remove documentation/metadata keys
-    data = {k: v for k, v in raw.items() if not k.startswith("_")}
+    # Detect schema format: { "config": { "properties": { ... } } }
+    if "config" in raw and "properties" in raw["config"]:
+        properties: dict = raw["config"]["properties"]
+        data = {
+            key: prop["default"]
+            for key, prop in properties.items()
+            if "default" in prop
+        }
+    else:
+        # Flat format — strip metadata keys (any key starting with '_')
+        data = {k: v for k, v in raw.items() if not k.startswith("_")}
 
     # Apply provider preset
     provider = data.pop("provider", None)

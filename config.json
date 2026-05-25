@@ -11,11 +11,13 @@
       },
       "email": {
         "type": "string",
-        "description": "Your full email address used both for authentication and as the From address when sending."
+        "description": "Your full email address used both for authentication and as the From address when sending.",
+        "default": "you@example.com"
       },
       "password": {
         "type": "string",
-        "description": "Account password or app-specific password. For Gmail, Yahoo, and iCloud with 2FA enabled, generate an App Password from your account security settings instead of your regular login password."
+        "description": "Account password or app-specific password. For Gmail, Yahoo, and iCloud with 2FA enabled, generate an App Password from your account security settings instead of your regular login password.",
+        "default": "your_app_password_here"
       },
       "imap_host": {
         "type": "string",
