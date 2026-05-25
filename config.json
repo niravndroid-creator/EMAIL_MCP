@@ -1,58 +1,14 @@
 {
-  "config": {
-    "type": "object",
-    "required": ["email", "password"],
-    "properties": {
-      "provider": {
-        "type": "string",
-        "description": "Email provider preset. When set, automatically fills imap_host, imap_port, imap_use_ssl, smtp_host, smtp_port, smtp_use_tls, smtp_use_ssl. Any field you explicitly set overrides the preset. Set to null to configure all IMAP/SMTP fields manually.",
-        "enum": ["gmail", "yahoo", "outlook", "icloud", "zoho"],
-        "default": "gmail"
-      },
-      "email": {
-        "type": "string",
-        "description": "Your full email address used both for authentication and as the From address when sending."
-      },
-      "password": {
-        "type": "string",
-        "description": "Account password or app-specific password. For Gmail, Yahoo, and iCloud with 2FA enabled, generate an App Password from your account security settings instead of your regular login password."
-      },
-      "imap_host": {
-        "type": "string",
-        "description": "IMAP server hostname. Auto-filled by provider preset. Required if provider is null.",
-        "default": ""
-      },
-      "imap_port": {
-        "type": "integer",
-        "description": "IMAP server port. 993 is the standard encrypted port (requires imap_use_ssl=true). All supported providers use 993.",
-        "default": 993
-      },
-      "imap_use_ssl": {
-        "type": "boolean",
-        "description": "Connect to the IMAP server using SSL/TLS from the start. Must be true when imap_port is 993.",
-        "default": true
-      },
-      "smtp_host": {
-        "type": "string",
-        "description": "SMTP server hostname. Auto-filled by provider preset. Required if provider is null.",
-        "default": ""
-      },
-      "smtp_port": {
-        "type": "integer",
-        "description": "SMTP server port. 587 uses STARTTLS (set smtp_use_tls=true, smtp_use_ssl=false). 465 uses SSL-on-connect (set smtp_use_ssl=true, smtp_use_tls=false). 587 with STARTTLS is the recommended modern standard.",
-        "enum": [587, 465],
-        "default": 587
-      },
-      "smtp_use_tls": {
-        "type": "boolean",
-        "description": "Upgrade the SMTP connection to TLS using STARTTLS after connecting. Use with smtp_port=587. Mutually exclusive with smtp_use_ssl.",
-        "default": true
-      },
-      "smtp_use_ssl": {
-        "type": "boolean",
-        "description": "Connect to the SMTP server using SSL/TLS from the start. Use with smtp_port=465. Mutually exclusive with smtp_use_tls.",
-        "default": false
-      }
-    }
-  }
+  "provider": "gmail",
+  "email": "you@example.com",
+  "password": "your_app_password_here",
+
+  "imap_host": "",
+  "imap_port": 993,
+  "imap_use_ssl": true,
+
+  "smtp_host": "",
+  "smtp_port": 587,
+  "smtp_use_tls": true,
+  "smtp_use_ssl": false
 }
