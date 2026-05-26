@@ -14,7 +14,7 @@ from email_client import EmailClient
 _config = load_config()
 _client = EmailClient(_config)
 
-mcp = FastMCP("Email MCP Server")
+mcp = FastMCP("Email MCP Server", host="0.0.0.0", port=8000)
 
 
 # ---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ def download_attachment(
 
 
 def main() -> None:
-    mcp.run()
+    mcp.run(transport="streamable-http", port=8000, host="0.0.0.0")
 
 
 if __name__ == "__main__":
