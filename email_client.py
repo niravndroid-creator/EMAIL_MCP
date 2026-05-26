@@ -211,21 +211,20 @@ class EmailClient:
         try:
             conn.select(folder, readonly=True)
             msg = self._fetch_parsed_message(conn, email_id)
-            plain, html = _extract_bodies(msg)
+            plain, _ = _extract_bodies(msg)
             attachments = _extract_attachment_meta(msg)
             return {
-                "id": email_id,
-                "message_id": msg.get("Message-ID", ""),
-                "subject": _decode_header_value(msg.get("Subject", "(no subject)")),
-                "from": _decode_header_value(msg.get("From", "")),
-                "to": _decode_header_value(msg.get("To", "")),
-                "cc": _decode_header_value(msg.get("Cc", "")),
-                "date": msg.get("Date", ""),
-                "references": msg.get("References", ""),
-                "body_text": plain,
-                "body_html": html,
-                "attachments": attachments,
-            }
+                    "id": email_id,
+                    "message_id": msg.get("Message-ID", ""),
+                    "subject": _decode_header_value(msg.get("Subject", "(no subject)")),
+                    "from": _decode_header_value(msg.get("From", "")),
+                    "to": _decode_header_value(msg.get("To", "")),
+                    "cc": _decode_header_value(msg.get("Cc", "")),
+                    "date": msg.get("Date", ""),
+                    "references": msg.get("References", ""),
+                    "body": plain,
+                    "attachments": attachments,
+                }
         finally:
             conn.logout()
 

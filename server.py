@@ -53,7 +53,7 @@ def get_email_by_id(email_id: str, folder: str = "INBOX") -> dict[str, Any]:
 
     Returns:
         Full email dict with: id, message_id, subject, from, to, cc, date,
-        references, body_text, body_html, and attachments (list of metadata).
+        references, body (plain text), and attachments (list of metadata).
         Attachment metadata includes: filename, content_type, size_bytes.
         Use download_attachment to retrieve the actual attachment content.
     """
